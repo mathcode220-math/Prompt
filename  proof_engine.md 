@@ -1,0 +1,106 @@
+# Proof Engine — Thinking Protocol
+
+> A diagnostic lens, not a recipe book.
+> Mathematics is too wide to enumerate. This protocol teaches you how to *read* a statement and *feel* which door to open first.
+
+---
+
+## The Core Loop
+
+READ → DIAGNOSE → PICK → BUILD → ATTACK
+
+- READ: Parse the statement into logical atoms.
+- DIAGNOSE: What is the *shape* of the claim?
+- PICK: Choose the natural door (not the clever one).
+- BUILD: Use `mathematical_construction_framework` to walk through.
+- ATTACK: Try to kill your own proof.
+
+---
+
+## Phase 1: Parse the Claim
+
+Strip the statement to its logical skeleton.
+
+| Skeleton | Question to Ask |
+|---|---|
+| ∀x, P(x) | Can I build one generic argument that covers all cases? |
+| ∃x, P(x) | Can I construct an explicit example? Or prove non-existence by contradiction? |
+| A → B | If I assume A, does B follow directly? Or is the contrapositive easier? |
+| A ↔ B | Are both directions equally hard? |
+| ¬P | Is P easier to assume and destroy? |
+
+> Rule: If the skeleton is unclear, rewrite in formal logic first.
+
+---
+
+## Phase 2: Feel the Weight
+
+Every statement has a *heavy side* — the side that carries the burden.
+
+"If f is continuous on [a,b], then f is bounded"
+Heavy side: Proving boundedness from continuity
+Natural door: Direct: assume continuity → construct bound
+
+"There exists a transcendental number"
+Heavy side: Constructing such a number
+Alternative door: Assume all numbers are algebraic → contradiction
+
+> Rule: Identify the heavy side first. If too heavy, flip the statement.
+
+---
+
+## Phase 3: The Door Selection Heuristic
+
+Choose the *natural* door — where the heavy side becomes manageable.
+
+| Heavy side is... | Try this door first |
+|---|---|
+| Claim about *all* objects | Induction / Universal generalization |
+| Claim about *existence* | Direct construction / Contradiction |
+| Claim that *something is impossible* | Contradiction |
+| Claim about *equivalence* | Split into two implications |
+| Claim about *infinite processes* | ε-δ / Limit / Compactness |
+| Claim about *structure preservation* | Homomorphism / Functorial |
+| Claim with *probabilistic flavor* | Probabilistic method / Measure |
+
+> Rule: This table is open. If your statement does not fit, invent a new row. The protocol is the *process of asking*, not the answers.
+
+---
+
+## Phase 4: Before You Build
+
+Before opening `mathematical_construction_framework`:
+
+1. What am I allowed to use? (Axioms? Prior theorems?)
+2. What is the smallest non-trivial case? (n=0, n=1, empty set)
+3. Can I state the converse? Does it hold?
+4. Where could this fail? (Edge cases, degenerate structures)
+
+> Rule: If you cannot answer (2) and (4), you do not understand the statement yet.
+
+---
+
+## Phase 5: Attack Your Own Proof
+
+You are no longer the builder. You are the enemy of the proof.
+
+- Find the weakest step. What if it is false?
+- Replace every "clearly" with a formal justification or delete it.
+- Test boundary cases from Phase 4.
+- If the proof survives, it is a proof. If not, return to Phase 2.
+
+---
+
+## Quick Reference Card
+
+| Stuck? | Action |
+|---|---|
+| Do not know which door | Return to Phase 1: rewrite the skeleton |
+| Door feels too heavy | Return to Phase 2: flip the statement |
+| Proof has gaps | Return to Phase 4: check assumptions |
+| Proof works but feels fragile | Phase 5: attack harder |
+| All doors fail | The statement might be false. Build a counterexample. |
+
+---
+
+*This is a thinking protocol. It does not contain proofs. It contains the questions that lead to proofs.*
