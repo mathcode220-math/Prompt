@@ -1,10 +1,17 @@
 ---
 
 name: Adaptive Modular Build
-description: Build and evolve software using the simplest architecture that safely satisfies the current goal, adding boundaries only when they provide a concrete engineering benefit.
+description: Build and evolve software using the simplest architecture that safely satisfies the current goal.
 version: 2.0.0
-tags: [architecture, modularity, software engineering, maintainability, ai-agent]
----------------------------------------------------------------------------------
+tags:
+
+* architecture
+* modularity
+* software-engineering
+* maintainability
+* ai-agent
+
+---
 
 # Adaptive Modular Build
 
@@ -12,12 +19,12 @@ tags: [architecture, modularity, software engineering, maintainability, ai-agent
 
 Build software with **minimal sufficient complexity**.
 
-The agent must avoid both:
+Avoid both:
 
 * monolithic designs that mix unrelated responsibilities
-* over-engineered designs that introduce unnecessary layers, files, or abstractions
+* over-engineered designs with unnecessary layers, files, or abstractions
 
-The goal is:
+Target:
 
 ```text
 Correctness
@@ -29,11 +36,9 @@ Correctness
 - Unnecessary complexity
 ```
 
----
-
 ## 1. Core Rule
 
-> **Do not create a file, layer, interface, abstraction, dispatcher, adapter, or service unless it solves a real problem.**
+> Do not create a file, layer, interface, abstraction, dispatcher, adapter, or service unless it solves a real problem.
 
 Valid reasons include:
 
@@ -47,8 +52,6 @@ Valid reasons include:
 
 If none applies, keep the simpler design.
 
----
-
 ## 2. Choose Architecture Adaptively
 
 Never assume a fixed number of layers or files.
@@ -57,21 +60,19 @@ Choose the smallest structure appropriate to the task:
 
 ```text
 Simple feature
-→ few files, direct implementation
+-> few files, direct implementation
 
 Growing feature
-→ separate responsibilities where useful
+-> separate responsibilities where useful
 
 Multiple implementations
-→ interface + routing/backend boundary
+-> interface + routing/backend boundary
 
 Complex system
-→ explicit API / validation / routing / core / backend / observability
+-> explicit API / validation / routing / core / backend / observability
 ```
 
 Architecture must grow because **system complexity requires it**, not because the protocol requires it.
-
----
 
 ## 3. Responsibility Boundaries
 
@@ -84,7 +85,7 @@ API
 Validation
 Core logic
 Routing
-Backend/infrastructure
+Backend / infrastructure
 Persistence
 Observability
 ```
@@ -96,11 +97,9 @@ High cohesion
 Low coupling
 ```
 
-Avoid combining unrelated responsibilities merely to reduce file count.
+Do not combine unrelated responsibilities merely to reduce file count.
 
-Also avoid splitting closely related code merely to increase modularity.
-
----
+Do not split closely related code merely to increase modularity.
 
 ## 4. Public API
 
@@ -115,8 +114,6 @@ The API should describe **what** the system provides, not **how** it is implemen
 
 Do not expose backend-specific details unless required by the contract.
 
----
-
 ## 5. Dependencies and Backends
 
 Dependencies should flow toward stable contracts.
@@ -125,11 +122,11 @@ Prefer:
 
 ```text
 Application
-   ↓
+    |
 Core / Domain
-   ↓
+    |
 Interfaces
-   ↓
+    |
 Infrastructure / Backends
 ```
 
@@ -150,22 +147,18 @@ Do not spread backend-specific decisions throughout business logic.
 
 Create a dispatcher only when there is a meaningful routing decision.
 
----
-
 ## 6. Validation and Safety
 
 Validate inputs and important preconditions before unsafe side effects.
 
-Validation must protect:
+Validation should protect:
 
-* null/invalid inputs
+* invalid inputs
 * impossible states
 * explicit limits
 * required invariants
 
-Validation does **not** require a separate module. For simple cases, local validation is preferable.
-
----
+Validation does not require a separate module. For simple cases, local validation is preferable.
 
 ## 7. Observability
 
@@ -181,8 +174,6 @@ Do not log every operation by default.
 
 Observability should provide useful information with reasonable overhead.
 
----
-
 ## 8. Testing
 
 Tests are independent consumers of production behavior.
@@ -197,22 +188,18 @@ Integration behavior
 Regression behavior
 ```
 
-Test the contract and important behavior rather than implementation details alone.
+Test important contracts and behavior rather than implementation details alone.
 
 Production code must not depend on test code.
-
----
 
 ## 9. Avoid Over-Engineering
 
 Do not use arbitrary limits such as:
 
-```text
-maximum lines per function
-maximum lines per file
-mandatory number of modules
-mandatory architecture layers
-```
+* maximum lines per function
+* maximum lines per file
+* mandatory number of modules
+* mandatory architecture layers
 
 Size is a signal, not a rule.
 
@@ -226,8 +213,6 @@ Refactor when evidence shows:
 * excessive branching
 * difficult debugging
 * frequent unrelated changes in the same place
-
----
 
 ## 10. Change Procedure
 
@@ -245,8 +230,6 @@ For every feature or modification:
 9. Refactor only when evidence justifies it.
 ```
 
----
-
 ## 11. Architecture Decision Test
 
 Before adding an abstraction, answer:
@@ -260,9 +243,7 @@ Will the benefit outweigh that complexity?
 
 If the answer is unclear:
 
-> **Do not add the abstraction yet.**
-
----
+> Do not add the abstraction yet.
 
 ## 12. Final Principle
 
