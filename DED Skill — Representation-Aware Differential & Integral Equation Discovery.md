@@ -1,7 +1,7 @@
 ---
 name: Differential and Integral Equation Discovery (DED)
 description: Discover, compare, test, and validate the simplest defensible dynamical representation of a system from data and prior knowledge, using differential, integral, discrete, and equivalent mathematical forms.
-version: 5.0.0
+version: 5.1.0
 tags: [differential-equations, integral-equations, dynamical-systems, scientific-discovery, symbolic-regression, representation-discovery, system-identification]
 ---
 
@@ -126,7 +126,11 @@ Do not automatically differentiate noisy data.
 
 **Question:** Can we recover derivatives reliably?
 
-$$y'(t), \quad y''(t), \quad y'''(t), \ldots$$
+$$
+\begin{align}
+y'(t), \quad y''(t), \quad y'''(t), \quad \ldots
+\end{align}
+$$
 
 with sufficient stability and confidence?
 
@@ -140,7 +144,11 @@ with sufficient stability and confidence?
 
 **Evidence for memory indicates:**
 
-$$y(t) = f(t) + \int_a^t K(t,s) \, y(s) \, ds$$
+$$
+\begin{equation}
+y(t) = f(t) + \int_a^t K(t,s) \, y(s) \, \mathrm{d}s
+\end{equation}
+$$
 
 or more general history-dependent models should have high priority.
 
@@ -156,7 +164,11 @@ Instead, construct and compare mathematically justified representations.
 
 ### 3.1 Differential Form
 
-$$\frac{d}{dt}[y] = F(t, y, u, \theta)$$
+$$
+\begin{equation}
+\boxed{\frac{\mathrm{d}y}{\mathrm{d}t} = F(t, y, u, \theta)}
+\end{equation}
+$$
 
 **Includes:**
 - Ordinary Differential Equations (ODE)
@@ -168,31 +180,44 @@ $$\frac{d}{dt}[y] = F(t, y, u, \theta)$$
 
 Use exact or formally equivalent transformations when justified.
 
-**Example:** Starting from
+**Transformation:**
 
-$$\dot{y}(t) = F(t, y(t))$$
+$$
+\begin{align}
+\dot{y}(t) &= F(t, y(t)) \\
+\Rightarrow \quad y(t) &= y(t_0) + \int_{t_0}^{t} F(s, y(s)) \, \mathrm{d}s
+\end{align}
+$$
 
-we obtain
+### 3.3 Linear Integral Form (Fredholm)
 
-$$y(t) = y(t_0) + \int_{t_0}^{t} F(s, y(s)) \, ds$$
+$$
+\begin{equation}
+\boxed{y(t) = f(t) + \int_a^b K(t,s) \, y(s) \, \mathrm{d}s}
+\end{equation}
+$$
 
-### 3.3 Linear Integral Form
+**Type:** Fredholm equation — integration domain is fixed.
 
-$$y(t) = f(t) + \int_a^b K(t,s) \, y(s) \, ds$$
+### 3.4 Volterra Form (Causal Memory)
 
-**Fredholm equation** — integration domain is fixed.
+$$
+\begin{equation}
+\boxed{y(t) = f(t) + \int_{t_0}^{t} K(t,s) \, y(s) \, \mathrm{d}s}
+\end{equation}
+$$
 
-### 3.4 Volterra Form
-
-$$y(t) = f(t) + \int_{t_0}^{t} K(t,s) \, y(s) \, ds$$
-
-**Volterra equation** — causal domain with upper limit = current time.
+**Type:** Volterra equation — causal domain with upper limit = current time.
 
 *Especially important when causality or memory is present.*
 
 ### 3.5 Integro-Differential Form
 
-$$\frac{d}{dt}[y](t) = F\left( t, y(t), \int_a^b K(t,s) \, y(s) \, ds \right)$$
+$$
+\begin{equation}
+\boxed{\frac{\mathrm{d}y}{\mathrm{d}t}(t) = F\left( t, y(t), \int_a^b K(t,s) \, y(s) \, \mathrm{d}s \right)}
+\end{equation}
+$$
 
 **Use only when evidence supports both local and historical effects.**
 
@@ -200,7 +225,11 @@ $$\frac{d}{dt}[y](t) = F\left( t, y(t), \int_a^b K(t,s) \, y(s) \, ds \right)$$
 
 For discrete or poorly sampled systems:
 
-$$y_{k+1} = F(k, y_k, u_k)$$
+$$
+\begin{equation}
+\boxed{y_{k+1} = F(k, y_k, u_k)}
+\end{equation}
+$$
 
 *Do not force continuous-time structure when observations do not justify it.*
 
@@ -210,21 +239,25 @@ $$y_{k+1} = F(k, y_k, u_k)$$
 
 Each representation must be evaluated before committing to symbolic search.
 
-### Scoring Conceptual Formula
+### Scoring Function
 
-$$S(R) = E(R) + C(R) + I(R) + U(R) + G(R)$$
+$$
+\begin{equation}
+\boxed{S(R) = E(R) + C(R) + I(R) + U(R) + G(R)}
+\end{equation}
+$$
 
-where:
+**Components:**
 
-| Component | Meaning |
-|-----------|---------|
-| $E(R)$ | **Empirical error** on validation set |
-| $C(R)$ | **Structural complexity** (terms, operators, kernels) |
-| $I(R)$ | **Identifiability difficulty** (parameter uniqueness) |
-| $U(R)$ | **Numerical instability** (conditioning, truncation) |
-| $G(R)$ | **Generalization risk** (overfitting penalty) |
+| Component | Meaning | Goal |
+|-----------|---------|------|
+| $E(R)$ | Empirical error on validation set | Minimize |
+| $C(R)$ | Structural complexity (terms, operators) | Minimize |
+| $I(R)$ | Identifiability difficulty | Minimize |
+| $U(R)$ | Numerical instability | Minimize |
+| $G(R)$ | Generalization risk (overfitting penalty) | Minimize |
 
-**Lower score is better.**
+**Principle:** Lower score is better.
 
 ### Selection Criteria
 
@@ -253,7 +286,7 @@ Differentiation amplifies measurement noise or produces unreliable derivatives.
 
 The physical or mathematical process is naturally cumulative or history-dependent.
 
-### C. Memory
+### C. Memory Effects
 
 The current state depends on historical values.
 
@@ -261,27 +294,43 @@ The current state depends on historical values.
 
 A differential operator can be transformed into a useful kernel representation:
 
-$$L[y] = f \quad \Rightarrow \quad y = \int G(\cdot, \cdot) \, f$$
+$$
+\begin{equation}
+L[y] = f \quad \Rightarrow \quad y = \int G(\cdot, \cdot) \, f \, \mathrm{d}(\cdot)
+\end{equation}
+$$
 
 ### E. Low-Rank Kernel Structure
 
 The kernel is exactly or approximately separable:
 
-$$K(t,s) \approx \sum_{i=1}^{r} u_i(t) \, v_i(s), \qquad r \ll n$$
+$$
+\begin{equation}
+\boxed{K(t,s) \approx \sum_{i=1}^{r} u_i(t) \, v_i(s), \quad r \ll n}
+\end{equation}
+$$
 
 ### F. Convolution Structure
 
-The kernel depends primarily on the lag:
+The kernel depends primarily on the time lag:
 
-$$K(t,s) = k(t - s)$$
+$$
+\begin{equation}
+\boxed{K(t,s) = k(t - s)}
+\end{equation}
+$$
 
 *Translation-invariant, often simpler than full $(t,s)$ dependence.*
 
-### G. Volterra Structure
+### G. Volterra Causality
 
-The causal domain $s \leq t$ induces useful triangular structure.
+The causal domain $s \leq t$ induces useful triangular structure:
 
-$$y(t) = f(t) + \int_{t_0}^{t} K(t,s) \, y(s) \, ds$$
+$$
+\begin{equation}
+y(t) = f(t) + \int_{t_0}^{t} K(t,s) \, y(s) \, \mathrm{d}s, \quad K(t,s) = 0 \text{ for } s > t
+\end{equation}
+$$
 
 ### H. Reduced Search Complexity
 
@@ -297,17 +346,23 @@ For integral models, do not search over arbitrary functions first.
 
 ### Priority Candidates (in order)
 
-| Kernel Form | Formula | Type |
-|-------------|---------|------|
-| **Constant** | $K(t,s) = 1$ | Simplest |
-| **Linear** | $K(t,s) = t, \quad s, \quad t-s$ | Separable polynomials |
-| **Separable** | $K(t,s) = u(t) v(s)$ | Rank-1 |
-| **Low-rank** | $K(t,s) = \sum_i u_i(t) v_i(s)$ | Rank-$r$ |
-| **Convolution** | $K(t,s) = k(t-s)$ | Translation-invariant |
+| Level | Kernel Form | Formula | Type |
+|-------|-------------|---------|------|
+| 1 | **Constant** | $K(t,s) = 1$ | Simplest |
+| 2 | **Linear** | $K(t,s) = t, \; s, \; t-s$ | Polynomial |
+| 3 | **Separable (Rank-1)** | $K(t,s) = u(t) v(s)$ | Factorizable |
+| 4 | **Low-Rank** | $K(t,s) = \sum_{i=1}^{r} u_i(t) v_i(s)$ | Rank-$r$ |
+| 5 | **Convolution** | $K(t,s) = k(t-s)$ | Translation-invariant |
 
 ### Standard Exponential and Oscillatory Kernels
 
-$$e^{-\lambda(t-s)}, \quad (t-s)^p, \quad \sin(\omega(t-s)), \quad \cos(\omega(t-s))$$
+$$
+\begin{align}
+\text{Exponential:} \quad &e^{-\lambda(t-s)} \\
+\text{Power:} \quad &(t-s)^p \\
+\text{Oscillatory:} \quad &\sin(\omega(t-s)), \quad \cos(\omega(t-s))
+\end{align}
+$$
 
 **Expand the kernel grammar only when evidence requires it.**
 
@@ -324,12 +379,12 @@ After representation selection, search for the simplest structural form.
 | 1 | Zero/constant | $y(t) = c$ |
 | 2 | Linear combination | $y(t) = c_1 f_1(t) + c_2 f_2(t)$ |
 | 3 | Separable | $K(t,s) = u(t)v(s)$ |
-| 4 | Sparse (few nonzero terms) | Mostly zero except key terms |
-| 5 | Low-rank (few hidden factors) | Rank-$r$ kernel with $r \ll n$ |
-| 6 | Polynomial | $\sum a_i y^i$ |
+| 4 | Sparse (few nonzero terms) | Few active terms |
+| 5 | Low-rank (few hidden factors) | Rank-$r$ kernel, $r \ll n$ |
+| 6 | Polynomial | $\sum_{i=0}^n a_i y^i$ |
 | 7 | Convolution | $K(t,s) = k(t-s)$ |
 | 8 | Symmetry/invariance | Preserved under transformation |
-| 9 | Known physical forms | Newton's law, Ohm's law, etc. |
+| 9 | Known physical forms | Newton, Ohm, continuity equations |
 | 10 | Nonlinear composite | $F(G_1, G_2, \ldots)$ |
 | 11 | Unrestricted symbolic | General search (last resort) |
 
@@ -344,10 +399,10 @@ For integral equations, explicitly test:
 - ✓ Symmetry: $K(t,s) = K(s,t)$?
 - ✓ Antisymmetry: $K(t,s) = -K(s,t)$?
 - ✓ Triangular structure: useful sparsity pattern?
-- ✓ Known Green kernels: match a standard form?
-- ✓ Smoothness: continuity, differentiability?
+- ✓ Known Green kernels: match standard form?
+- ✓ Smoothness: continuity and differentiability?
 - ✓ Locality: $K(t,s) \approx 0$ for $|t-s| > \Delta$?
-- ✓ Compact support: $K(t,s) = 0$ outside a bounded region?
+- ✓ Compact support: $K(t,s) = 0$ outside bounded region?
 
 ---
 
@@ -360,7 +415,7 @@ Once structure is chosen, estimate parameters.
 | Method | When to use |
 |--------|------------|
 | **Linear regression** | Structure is linear in parameters |
-| **Constrained regression** | Known bounds or constraints on parameters |
+| **Constrained regression** | Known bounds or constraints |
 | **Sparse regression** | Encourage fewer nonzero parameters |
 | **Nonlinear least squares** | Parameters enter nonlinearly |
 | **Robust regression** | High noise or outliers |
@@ -368,11 +423,15 @@ Once structure is chosen, estimate parameters.
 
 ### Key Principle
 
-Separate:
+Separate these two distinct phases:
 
-$$\text{Structure Discovery} \quad \Leftrightarrow \quad \text{Parameter Estimation}$$
+$$
+\begin{equation}
+\boxed{\text{Structure Discovery} \quad \not\leftrightarrow \quad \text{Parameter Estimation}}
+\end{equation}
+$$
 
-**Do not perform unrestricted symbolic search and parameter fitting simultaneously unless necessary.**
+**Do not perform unrestricted symbolic search and parameter fitting simultaneously.**
 
 ---
 
@@ -382,29 +441,45 @@ Whenever an integral kernel is separable or low rank, reduce the problem.
 
 ### Setup
 
-Given
+**Given:**
 
-$$y(t) = f(t) + \int_a^b K(t,s) \, y(s) \, ds$$
+$$
+\begin{equation}
+y(t) = f(t) + \int_a^b K(t,s) \, y(s) \, \mathrm{d}s
+\end{equation}
+$$
 
-and separable kernel
+**with separable kernel:**
 
-$$K(t,s) = \sum_{i=1}^{r} u_i(t) \, v_i(s)$$
+$$
+\begin{equation}
+K(t,s) = \sum_{i=1}^{r} u_i(t) \, v_i(s)
+\end{equation}
+$$
 
 ### Reduction
 
-Define auxiliary variables:
+**Define auxiliary coefficients:**
 
-$$c_i = \int_a^b v_i(s) \, y(s) \, ds$$
+$$
+\begin{equation}
+c_i = \int_a^b v_i(s) \, y(s) \, \mathrm{d}s, \quad i = 1, \ldots, r
+\end{equation}
+$$
 
-Then the integral equation becomes:
+**Then the integral equation becomes finite-dimensional:**
 
-$$y(t) = f(t) + \sum_{i=1}^{r} u_i(t) \, c_i$$
+$$
+\begin{equation}
+\boxed{y(t) = f(t) + \sum_{i=1}^{r} u_i(t) \, c_i}
+\end{equation}
+$$
 
 ### Benefit
 
-**This reduces the original infinite-dimensional functional problem to a finite-dimensional algebraic system.**
+**This reduces the infinite-dimensional functional problem to a finite-dimensional algebraic system.**
 
-**Strongly prefer this reduction over generic iterative solution when it is exact or demonstrably accurate.**
+**Strongly prefer this reduction over generic iterative solution when exact or accurate.**
 
 ---
 
@@ -412,15 +487,20 @@ $$y(t) = f(t) + \sum_{i=1}^{r} u_i(t) \, c_i$$
 
 When two models have different mathematical forms, test whether they are equivalent.
 
-### Example
+### Example: ODE vs. Integral
 
-$$\dot{y} = F(t, y) \quad \text{versus} \quad y(t) = y_0 + \int_{t_0}^{t} F(s, y(s)) \, ds$$
+$$
+\begin{align}
+\text{Differential form:} \quad &\dot{y} = F(t, y) \\
+\text{Integral form:} \quad &y(t) = y_0 + \int_{t_0}^{t} F(s, y(s)) \, \mathrm{d}s
+\end{align}
+$$
 
-These are mathematically equivalent.
+These are mathematically equivalent under sufficient regularity conditions.
 
 ### Critical Questions
 
-Do not treat equivalent representations as independent scientific discoveries. Instead ask:
+Do not treat equivalent representations as independent discoveries. Instead ask:
 
 1. **Discoverability:** Which form is easier to discover from data?
 2. **Stability:** Which form is more stable under measurement noise?
@@ -461,7 +541,7 @@ Validation must test more than training fit.
 | **Kernel identifiability** | is kernel uniquely determined from data? |
 | **Discretization sensitivity** | does result depend strongly on grid refinement? |
 | **Quadrature sensitivity** | do numerical integration methods matter? |
-| **Kernel approximation error** | how does truncating/approximating kernel affect results? |
+| **Kernel approximation error** | how does truncating kernel affect results? |
 | **Integration domain dependence** | results robust to domain choice? |
 
 ### For Differential Models — Additional Tests
@@ -470,7 +550,7 @@ Validation must test more than training fit.
 |-----------|--------------|
 | **Derivative estimation sensitivity** | does numerical differentiation method matter? |
 | **Discretization sensitivity** | does result depend on time step? |
-| **Numerical differentiation robustness** | finite differences vs. smoothing-then-differentiating? |
+| **Numerical differentiation robustness** | finite differences vs. smoothing? |
 
 ---
 
@@ -478,13 +558,17 @@ Validation must test more than training fit.
 
 When multiple representations survive validation, compare them explicitly.
 
-### Total Complexity
+### Total Complexity Minimization
 
 Prefer the model minimizing:
 
-$$\text{Total Complexity} = C_{\text{structure}} + C_{\text{parameters}} + C_{\text{assumptions}} + C_{\text{numerical}}$$
+$$
+\begin{equation}
+\boxed{\text{Total Cost} = C_{\text{structure}} + C_{\text{parameters}} + C_{\text{assumptions}} + C_{\text{numerical}}}
+\end{equation}
+$$
 
-### Breakdown
+### Component Breakdown
 
 | Component | What counts |
 |-----------|------------|
@@ -496,13 +580,14 @@ $$\text{Total Complexity} = C_{\text{structure}} + C_{\text{parameters}} + C_{\t
 ### Selection Rule
 
 **Do NOT:**
-- ✗ Choose a more complicated integral model merely because it has slightly lower residual error.
-- ✗ Choose an ODE merely because the task was initially called "differential equation discovery."
-- ✗ Accept unnecessary complexity for marginal accuracy gains.
+- ✗ Choose a more complicated integral model for marginally lower residual error
+- ✗ Choose an ODE merely because the task was called "differential equation discovery"
+- ✗ Accept unnecessary complexity for marginal accuracy gains
 
 **DO:**
-- ✓ Explicitly document trade-offs between competing models.
-- ✓ Report the Pareto frontier of simpler models with slightly higher error.
+- ✓ Explicitly document trade-offs between competing models
+- ✓ Report the Pareto frontier of simpler models with higher error
+- ✓ Justify all complexity increases with evidence
 
 ---
 
@@ -530,31 +615,29 @@ Ask the model these hard questions:
 
 The critic may trigger a return to:
 
-- 🔄 diagnosis (re-examine data)
-- 🔄 representation discovery (try different form)
-- 🔄 structure search (expand or contract grammar)
-- 🔄 parameter search (refine estimates)
+- 🔄 **Diagnosis:** re-examine data quality, noise, structure
+- 🔄 **Representation Discovery:** try different mathematical form
+- 🔄 **Structure Search:** expand or contract grammar
+- 🔄 **Parameter Search:** refine or regularize estimates
 
 ---
 
 # 14. SEARCH-SPACE UPDATE
 
-Search should be adaptive.
+Search should be adaptive and evidence-driven.
 
-### Failure Analysis
+### Failure Analysis and Response
 
-If a candidate fails, identify the failure type and adapt the search.
-
-| Failure Mode | Response |
-|--------------|----------|
-| Derivative instability | Increase integral-form priority |
-| Missing memory effects | Expand kernel search or add history terms |
-| Poor local dynamics | Test integral, delay, or feedback structures |
-| Excessive nonlinearity | Test coordinate transformation or integral form |
-| Residual convolution pattern | Test explicit convolution kernels |
-| Repeated low-dim behavior | Test low-rank or separable structures |
-| Boundary-driven behavior | Test Green-function formulation |
-| Overfitting | Add regularization or reduce complexity |
+| Failure Mode | Root Cause | Response |
+|--------------|-----------|----------|
+| Derivative instability | Noise amplification | Increase integral-form priority |
+| Missing memory effects | Insufficient history terms | Expand kernel search or add history |
+| Poor local dynamics | Neglected fast processes | Test integral, delay, or feedback |
+| Excessive nonlinearity | Improper coordinates | Test transformation or integral form |
+| Residual convolution pattern | Systematic lag structure | Test explicit convolution kernels |
+| Repeated low-dim behavior | Hidden factors | Test low-rank or separable structures |
+| Boundary-driven behavior | Boundary effects dominant | Test Green-function formulation |
+| Overfitting | Excess model capacity | Add regularization, reduce complexity |
 
 ### Principle
 
@@ -570,23 +653,25 @@ Use progressive complexity. Stop as soon as a model is defensible.
 
 ### Complexity Levels
 
-| Level | Description | Example |
-|-------|-------------|---------|
+| Level | Description | Examples |
+|-------|-------------|----------|
 | **0** | Constants, trivial dynamics | $y(t) = c$ |
-| **1** | Simple linear ODEs/integrals | $\dot{y} = ay + b$, $y = f + \int K \cdot y$ |
+| **1** | Simple linear ODE/integrals | $\dot{y} = ay + b$; $y = f + \int K \cdot y$ |
 | **2** | Sparse linear combinations | $\dot{y} = a_1 y + a_2 \sin(t) + a_3 x$ |
 | **3** | Separable, low-rank kernels | $K(t,s) = u(t)v(s)$ |
-| **4** | Convolution, Volterra structures | $y = f + \int_0^t k(t-s) y(s) ds$ |
+| **4** | Convolution, Volterra structures | $y = f + \int_0^t k(t-s) y(s) \mathrm{d}s$ |
 | **5** | Simple nonlinear dynamics | $\dot{y} = a y + b y^2$ |
 | **6** | Integro-differential, memory | $\dot{y} = F(y, \int K y)$ |
-| **7** | General nonlinear symbolic | Unrestricted form search |
-| **8** | Highly complex, multiple domains | PDEs, stochastic terms, etc. |
+| **7** | General symbolic nonlinear | Unrestricted form search |
+| **8** | Highly complex, multiple domains | PDEs, stochastic, multiscale |
 
 ### Stopping Rule
 
-**Stop as soon as a model is defensible.**
+$$
+\boxed{\text{STOP when model is DEFENSIBLE}}
+$$
 
-**Do not continue searching merely because a more complex model can reduce residual error.**
+**Do not continue searching merely because more complex models reduce residual error.**
 
 ---
 
@@ -594,15 +679,15 @@ Use progressive complexity. Stop as soon as a model is defensible.
 
 At any stage, DED may switch representation.
 
-### Switching Rules
+### Switching Rules and Triggers
 
-| Condition | Action | Reason |
-|-----------|--------|--------|
-| Derivatives unstable | $\text{ODE} \rightarrow \text{Integral}$ | Avoid noise amplification |
-| Kernel finite-dimensional | $\text{Integral} \rightarrow \text{ODE}$ | Simpler structure |
-| Kernel translation-invariant | $\text{Integral} \rightarrow \text{Convolution}$ | Reduced parameters |
-| Kernel admits state realization | $\text{Convolution} \rightarrow \text{Finite\text{-}dim}$ | ODE form more interpretable |
-| Hidden multiscale behavior | $\text{ODE} \rightarrow \text{Multiscale}$ | Capture multiple timescales |
+| Condition | Transformation | Reason |
+|-----------|-----------------|--------|
+| Derivatives unstable | ODE → Integral | Avoid noise amplification |
+| Kernel finite-dimensional | Integral → ODE | Simpler state-space structure |
+| Kernel translation-invariant | Integral → Convolution | Reduce parameters by symmetry |
+| Kernel admits state realization | Convolution → Finite-dim state | ODE form more interpretable |
+| Hidden multiscale behavior | ODE → Multiscale | Capture multiple timescales |
 
 **The system should prefer representations that expose simpler governing structure.**
 
@@ -612,8 +697,8 @@ At any stage, DED may switch representation.
 
 Stop when **all** of the following hold:
 
-1. ✓ The model passes independent validation (held-out data)
-2. ✓ The structure is sufficiently identifiable (parameters unique)
+1. ✓ Model passes independent validation (held-out data)
+2. ✓ Structure is sufficiently identifiable (parameters unique)
 3. ✓ Complexity is justified (vs. simpler alternatives)
 4. ✓ Residuals contain no strong unexplained structure (white noise)
 5. ✓ Known constraints are satisfied (conservation laws, etc.)
@@ -621,7 +706,11 @@ Stop when **all** of the following hold:
 
 ### Handling Ambiguity
 
-If several models remain equally defensible, **report the ambiguity rather than forcing a unique answer.**
+If several models remain equally defensible:
+
+$$
+\boxed{\text{Report the ambiguity rather than forcing a unique answer}}
+$$
 
 ---
 
@@ -633,15 +722,21 @@ Return:
 
 State clearly whether the final model is:
 
-- Differential (ODE or PDE)
-- Integral (Fredholm or Volterra)
-- Integro-differential (both local and history)
-- Discrete (recurrence relation)
-- or another justified representation
+- **Differential:** ODE or PDE
+- **Integral:** Fredholm or Volterra
+- **Integro-differential:** Both local and history-dependent
+- **Discrete:** Recurrence relation
+- **Other:** Justified alternative representation
 
 ### B. Governing Equation
 
-Give the final equation in exact symbolic form with all parameters labeled.
+Give the final equation in exact symbolic form:
+
+$$
+\begin{equation}
+\boxed{\text{Final Model: [Your equation with all parameters]}}
+\end{equation}
+$$
 
 ### C. Equivalent Forms
 
@@ -651,17 +746,29 @@ When useful, provide equivalent differential/integral forms and explain trade-of
 
 Explain the discovered structure:
 
-- Sparse (few active terms)
-- Separable (factorizable kernel)
-- Low rank (rank-$r$ approximation)
-- Convolution (lag-dependent kernel)
-- Volterra (causal, memory)
-- Nonlinear (specific type)
-- etc.
+- **Sparse:** Few active terms
+- **Separable:** Factorizable kernel  
+- **Low rank:** Rank-$r$ approximation
+- **Convolution:** Lag-dependent kernel
+- **Volterra:** Causal, memory-dependent
+- **Nonlinear:** Specify type
+- **Other:** Additional structure
 
 ### E. Parameters
 
-List estimated parameters with uncertainty (standard error, confidence interval, or Bayesian posterior).
+List estimated parameters with uncertainty:
+
+$$
+\begin{equation}
+\begin{array}{c|c|c}
+\text{Parameter} & \text{Estimate} & \text{Uncertainty} \\
+\hline
+\theta_1 & \hat{\theta}_1 & \sigma_1 \\
+\theta_2 & \hat{\theta}_2 & \sigma_2 \\
+\vdots & \vdots & \vdots
+\end{array}
+\end{equation}
+$$
 
 ### F. Evidence
 
@@ -701,61 +808,93 @@ List only serious competing representations:
 
 # 19. META-RULE
 
-The fundamental rule of DED is:
+The fundamental rule of DED:
 
-$$\boxed{\text{Do not search for the equation first.}}$$
+$$
+\begin{equation}
+\boxed{\text{Do not search for the equation first.}}
+\end{equation}
+$$
 
 Instead:
 
-$$\boxed{\text{Search for the representation in which the governing law is simplest to discover.}}$$
+$$
+\begin{equation}
+\boxed{\text{Search for the representation in which the governing law is simplest to discover.}}
+\end{equation}
+$$
 
-Therefore, follow:
+Therefore, follow the pipeline:
 
-$$\boxed{
+$$
+\begin{equation}
+\boxed{
 \begin{align}
-\text{Representation} &\rightarrow \text{Structure}\\
-&\rightarrow \text{Parameters}\\
-&\rightarrow \text{Validation}
+\text{1. Choose} \; &\text{Representation} \\
+\text{2. Find} \; &\text{Structure} \\
+\text{3. Estimate} \; &\text{Parameters} \\
+\text{4. Validate} \; &\text{Rigorously}
 \end{align}
-}$$
+}
+\end{equation}
+$$
 
-rather than forcing:
+**NOT:**
 
-$$\boxed{
+$$
+\begin{equation}
+\boxed{
 \begin{align}
-\text{Data} &\rightarrow \text{Differentiation}\\
-&\rightarrow \text{ODE}
+\text{1. Collect} \; &\text{Data} \\
+\text{2. Differentiate} \; &\text{Automatically} \\
+\text{3. Fit} \; &\text{ODE}
 \end{align}
-}$$
+}
+\end{equation}
+$$
 
 ---
 
 # 20. FINAL DECISION RULE
 
-Given candidate representations $R_1, \ldots, R_m$, select:
+Given candidate representations $\mathcal{R} = \{R_1, R_2, \ldots, R_m\}$, select:
 
-$$R^* = \arg\min_R \left[ E_{\mathrm{validated}} + \lambda \, C_{\mathrm{structure}} + \mu \, C_{\mathrm{parameters}} + \nu \, C_{\mathrm{assumptions}} + \rho \, C_{\mathrm{numerical}} \right]$$
+$$
+\begin{equation}
+\boxed{
+R^* = \arg\min_{R \in \mathcal{R}} \left[ 
+E_{\text{valid}} + \lambda C_{\text{struct}} + \mu C_{\text{param}} + \nu C_{\text{assume}} + \rho C_{\text{numer}}
+\right]
+}
+\end{equation}
+$$
 
-subject to:
+**subject to:**
 
-$$\text{Validity}(R) \geq \tau$$
-
-and all known scientific and mathematical constraints.
+$$
+\begin{equation}
+\text{Validity}(R) \geq \tau \quad \text{and} \quad \text{All scientific constraints satisfied}
+\end{equation}
+$$
 
 ### Final Criterion
 
-The chosen model must be:
+The chosen model must satisfy all four properties:
 
-$$\boxed{
+$$
+\begin{equation}
+\boxed{
 \begin{align}
-&\text{SIMPLE} \quad + \\
-&\text{DEFENSIBLE} \quad + \\
-&\text{IDENTIFIABLE} \quad + \\
-&\text{GENERALIZABLE}
+\text{✓ SIMPLE} &\quad + \quad \text{Few parameters, transparent structure} \\
+\text{✓ DEFENSIBLE} &\quad + \quad \text{Justified by evidence} \\
+\text{✓ IDENTIFIABLE} &\quad + \quad \text{Parameters uniquely determined} \\
+\text{✓ GENERALIZABLE} &\quad + \quad \text{Predicts beyond training data}
 \end{align}
-}$$
+}
+\end{equation}
+$$
 
-**not merely accurate on the observed data.**
+**NOT merely accurate on the observed data.**
 
 ---
 
@@ -872,4 +1011,4 @@ $$\boxed{
 
 ---
 
-*Version 5.0.0 — Last Updated: 2026*
+*Version 5.1.0 — Professional Mathematical Formatting — Last Updated: 2026*
